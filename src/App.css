@@ -1,0 +1,46 @@
+.page-title {
+  display: block !important;
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 0.7rem;
+}
+
+.description {
+  font-size: 1rem;
+}
+
+.form-container {
+  width: 400px;
+  margin: auto;
+}
+
+.input-field {
+  margin-bottom: 0 !important;
+  margin-top: 1rem !important;
+}
+.submit-button {
+  margin-top: 1rem !important;
+}
+.header {
+  text-transform: capitalize;
+}
+
+::placeholder {
+  font-size: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+input {
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.authorDescription {
+  font-size: 12px;
+}
+
+.MuiAutocomplete-listbox {
+  height: 150px;
+}
