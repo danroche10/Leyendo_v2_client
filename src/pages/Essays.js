@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Grid, Image } from "semantic-ui-react";
@@ -71,6 +71,7 @@ function Essay(props) {
       <Grid.Row className="page-title">
         <h1>Essays from {writer}</h1>
         <Image className="author_image" size="small" src={image_link} />
+
         <br></br>
         {loading
           ? ""
@@ -110,7 +111,9 @@ function Essay(props) {
           </form>
         </div>
       </Grid.Row>
-
+      <Link labelPosition="left" as={Link} to={`/`}>
+        Back to Authors
+      </Link>
       <Grid.Row stretched>
         {loading ? (
           <h1>Loading essays..</h1>

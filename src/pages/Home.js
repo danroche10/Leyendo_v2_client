@@ -181,8 +181,8 @@ function Author() {
         <br></br>
       </Grid.Row>
       {topic || search2 ? (
-        <Button className="butty" labelPosition="left" onClick={clearFilters}>
-          clear filters
+        <Button labelPosition="left" onClick={clearFilters}>
+          Clear Filters
         </Button>
       ) : null}
 

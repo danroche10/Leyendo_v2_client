@@ -109,7 +109,10 @@ function SingleEssay(props) {
 
                 {!user && (
                   <Card.Description>
-                    Login to comment on this essay!
+                    <Link as={Link} to={`/login`}>
+                      Login
+                    </Link>{" "}
+                    to comment on this essay!
                   </Card.Description>
                 )}
               </Card.Content>
