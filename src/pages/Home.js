@@ -177,10 +177,15 @@ function Author() {
             </form>
           )}
         </div>
+        <br></br>
+        <br></br>
       </Grid.Row>
-      <Button labelPosition="left" onClick={clearFilters}>
-        clear filters
-      </Button>
+      {topic || search2 ? (
+        <Button className="butty" labelPosition="left" onClick={clearFilters}>
+          clear filters
+        </Button>
+      ) : null}
+
       <Grid.Row stretched>
         {loading ? (
           <h1>Loading authors..</h1>
