@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 import { useForm } from "../util/hooks";
 

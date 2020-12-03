@@ -10,6 +10,7 @@ function AuthorCard({
   author: { author, Description_1, Description_2, image_address, id },
 }) {
   const [writer, setWriter] = useContext(WriterContext);
+  console.log(writer);
 
   return (
     <Card fluid className="card">

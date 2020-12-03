@@ -26,6 +26,10 @@ const client = new ApolloClient({
   //Need proper solution to page crashing before user is able to login.
   //This isn't perfect as it is also catching incorrect crednetials error
   //and so preventing message from being displayed.
+
+  defaultOptions: {
+    mutate: { errorPolicy: "ignore" },
+  },
 });
 
 export default (

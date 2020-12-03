@@ -21,7 +21,7 @@ import { WriterContext } from "../context/WriterContext";
 //import { EssayIdContext } from "../context/EssayIdContext";
 
 function SingleEssay(props) {
-  const [writer, setWriter] = useContext(WriterContext);
+  const [writer] = useContext(WriterContext);
   console.log(writer);
 
   const { loading: loading2, data: data2 } = useQuery(FETCH_AUTHOR_2_QUERY, {

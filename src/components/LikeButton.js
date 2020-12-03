@@ -10,13 +10,13 @@ function LikeButton({ user, essay: { id, likeCount, likes } }) {
   //const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (user && likes.find(like => like.username === user.username)) {
+    if (user && likes.find((like) => like.username === user.username)) {
       setLiked(true);
     } else setLiked(false);
   }, [user, likes]);
 
   const [likeEssay] = useMutation(LIKE_ESSAY_MUTATION, {
-    variables: { essayId: id }
+    variables: { essayId: id },
   });
 
   const likeButton = user ? (
