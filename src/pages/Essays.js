@@ -1,47 +1,51 @@
 import React, { useState } from "react";
+//import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Grid } from "semantic-ui-react";
+import { Grid, Image } from "semantic-ui-react";
 import EssayCard from "../components/EssayCard";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Controller, useForm } from "react-hook-form";
+//import { WriterContext } from "../context/WriterContext";
 
 function Essay(props) {
   const writer = props.match.params.writer;
-  const [search, setSearch] = useState("");
 
+  const [search, setSearch] = useState("");
   let essays = "";
   let filteredEssays = "";
   let options = "";
   const { loading, data } = useQuery(FETCH_AUTHOR_QUERY, {
     variables: {
-      author: writer
-    }
+      author: writer,
+    },
   });
 
   console.log(`Loading: ${loading}`);
 
   if (data) {
     essays = { data: data.getEssay2 };
-    options = [...new Set(essays.data.map(option => option.topic))];
-    filteredEssays = essays.data.filter(x => x.topic.includes(search));
+    options = [...new Set(essays.data.map((option) => option.year))]
+      .sort()
+      .reverse();
+    filteredEssays = essays.data.filter((x) => x.year.includes(search));
+    filteredEssays.sort((a, b) => parseFloat(b.year) - parseFloat(a.year));
   }
 
   const { loading: loading2, data: data2 } = useQuery(FETCH_AUTHOR_2_QUERY, {
     variables: {
-      author: writer
-    }
+      author: writer,
+    },
   });
 
   console.log(`Loading: ${loading2}`);
   let author2 = "";
+  let image_link = "";
   if (data2) {
     author2 = { data2: data2.getAuthor2 };
-    //const hello = author2[Object.keys(author2)[0]];
-    //const hello2 = hello[Object.keys(hello)[0]];
-    //let john = hello2;
+    image_link = author2.data2[0].image_address;
   }
 
   const [formState, setFormState] = useState("");
@@ -52,6 +56,7 @@ function Essay(props) {
     setSearch(hello);
     console.log(filteredEssays);
   };
+  console.log(search);
 
   const handleChange = (e, newValue, reason) => {
     return newValue;
@@ -65,15 +70,17 @@ function Essay(props) {
     <Grid columns={3}>
       <Grid.Row className="page-title">
         <h1>Essays from {writer}</h1>
+        <Image className="author_image" size="small" src={image_link} />
+        <br></br>
         {loading
           ? ""
           : author2.data2 &&
-            author2.data2.map(x => (
-              <div key={x.id} className="description">
+            author2.data2.map((x) => (
+              <div key={x.id} className="essayPageDescription">
                 {x.Description_1}
               </div>
             ))}
-        <div style={{ width: 300 }}>
+        <div style={{ width: 300 }} className="search">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
               name="autocomplete"
@@ -86,10 +93,10 @@ function Essay(props) {
                   id="free-solo-demo"
                   freeSolo
                   options={options}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="e.g. Technology"
+                      label="e.g. 2016"
                       margin="normal"
                       variant="outlined"
                     />
@@ -103,17 +110,19 @@ function Essay(props) {
           </form>
         </div>
       </Grid.Row>
-      {loading ? (
-        <h1>Loading essays..</h1>
-      ) : (
-        essays.data &&
-        filteredEssays.map(essay => (
-          <Grid.Column key={essay.id} style={{ marginBottom: 20 }}>
-            <EssayCard essay={essay} />
-          </Grid.Column>
-        ))
-      )}
-      <Grid.Row></Grid.Row>
+
+      <Grid.Row stretched>
+        {loading ? (
+          <h1>Loading essays..</h1>
+        ) : (
+          essays.data &&
+          filteredEssays.map((essay) => (
+            <Grid.Column key={essay.id} style={{ marginBottom: 20 }}>
+              <EssayCard essay={essay} />
+            </Grid.Column>
+          ))
+        )}
+      </Grid.Row>
     </Grid>
   );
 }
@@ -123,6 +132,7 @@ const FETCH_AUTHOR_2_QUERY = gql`
       author
       Description_1
       Description_2
+      image_address
     }
   }
 `;

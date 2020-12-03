@@ -2,9 +2,10 @@ import React, { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
+import { useHistory } from "react-router-dom";
 
 function Login(props) {
   const context = useContext(AuthContext);
@@ -12,8 +13,10 @@ function Login(props) {
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: "",
-    password: ""
+    password: "",
   });
+
+  let history = useHistory();
 
   //Need proper solution to page crashing before user is able to login.
   //This isn't perfect as it is also catching incorrect crednetials error
@@ -21,12 +24,12 @@ function Login(props) {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       context.login(userData);
-      props.history.push("/");
+      history.goBack();
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
-    variables: values
+    variables: values,
   });
 
   function loginUserCallback() {
@@ -62,12 +65,16 @@ function Login(props) {
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
           <ul className="list">
-            {Object.values(errors).map(value => (
+            {Object.values(errors).map((value) => (
               <li key={value}>{value}</li>
             ))}
           </ul>
         </div>
       )}
+      <br></br>
+      <Link to="/register" className="link">
+        Register here
+      </Link>
     </div>
   );
 }

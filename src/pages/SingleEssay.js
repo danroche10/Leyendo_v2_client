@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { ExternalLink } from "react-external-link";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -10,16 +11,32 @@ import {
   Image,
   Icon,
   Label,
-  Form
+  Form,
 } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
 import LikeButton from "../components/LikeButton";
 import DeleteButton from "../components/DeleteButton";
+import { WriterContext } from "../context/WriterContext";
 //import { EssayIdContext } from "../context/EssayIdContext";
 
 function SingleEssay(props) {
-  //const [essayId, setEssayId] = useContext(essayIdContext);
+  const [writer, setWriter] = useContext(WriterContext);
+  console.log(writer);
+
+  const { loading: loading2, data: data2 } = useQuery(FETCH_AUTHOR_2_QUERY, {
+    variables: {
+      author: writer,
+    },
+  });
+
+  console.log(`Loading: ${loading2}`);
+  let author2 = "";
+  let image_link = "";
+  if (data2) {
+    author2 = { data2: data2.getAuthor2 };
+    image_link = author2.data2[0].image_address;
+  }
 
   const essayId = props.match.params.essayId;
   const { user } = useContext(AuthContext);
@@ -29,8 +46,8 @@ function SingleEssay(props) {
 
   const { loading, error, data } = useQuery(FETCH_ESSAY_QUERY, {
     variables: {
-      essayId
-    }
+      essayId,
+    },
   });
 
   const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
@@ -40,8 +57,8 @@ function SingleEssay(props) {
     },
     variables: {
       essayId,
-      body: comment
-    }
+      body: comment,
+    },
   });
 
   if (loading) return <p>Loading...</p>;
@@ -59,18 +76,14 @@ function SingleEssay(props) {
       link,
       likes,
       likeCount,
-      commentCount
+      commentCount,
     } = data.getEssay;
 
     essayMarkup = (
       <Grid>
         <Grid.Row>
           <Grid.Column width={2}>
-            <Image
-              src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              size="small"
-              float="right"
-            />
+            <Image size="small" src={image_link} />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card fluid>
@@ -84,12 +97,23 @@ function SingleEssay(props) {
                 <Card.Description>
                   {" "}
                   <ExternalLink href={link}>
+                    <br></br>
                     <button>Read</button>
                     <br></br>
+                    <br></br>
                   </ExternalLink>
+                  <Button labelPosition="left" as={Link} to={`/${author}`}>
+                    Back to {writer}'s Essays
+                  </Button>
                 </Card.Description>
+
+                {!user && (
+                  <Card.Description>
+                    Login to comment on this essay!
+                  </Card.Description>
+                )}
               </Card.Content>
-              <hr />
+
               <Card.Content extra>
                 <LikeButton user={user} essay={{ id, likeCount, likes }} />
                 <Button
@@ -109,7 +133,7 @@ function SingleEssay(props) {
             {user && (
               <Card fluid>
                 <Card.Content>
-                  <p>Post a comment</p>
+                  <p>Hey {user.username}! Why not post a comment?</p>
                   <Form>
                     <div className="ui action input fluid">
                       <input
@@ -117,7 +141,7 @@ function SingleEssay(props) {
                         placeholder="Comment.."
                         name="comment"
                         value={comment}
-                        onChange={event => setComment(event.target.value)}
+                        onChange={(event) => setComment(event.target.value)}
                         ref={commentInputRef}
                       />
                       <button
@@ -133,7 +157,7 @@ function SingleEssay(props) {
                 </Card.Content>
               </Card>
             )}
-            {comments.map(comment => (
+            {comments.map((comment) => (
               <Card fluid key={comment.id}>
                 <Card.Content>
                   {user && user.username === comment.username && (
@@ -187,6 +211,16 @@ const FETCH_ESSAY_QUERY = gql`
         createdAt
         body
       }
+    }
+  }
+`;
+
+const FETCH_AUTHOR_2_QUERY = gql`
+  query getAuthor2($author: String!) {
+    getAuthor2(author: $author) {
+      author
+
+      image_address
     }
   }
 `;

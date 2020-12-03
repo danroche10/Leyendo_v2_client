@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import { Link } from "react-router-dom";
 
 import { useForm } from "../util/hooks";
 
@@ -12,17 +13,17 @@ function Register(props) {
     username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, result) {
-      props.history.push("/");
+      props.history.push("/login");
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
-    variables: values
+    variables: values,
   });
 
   function registerUser() {
@@ -76,7 +77,7 @@ function Register(props) {
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
           <ul className="list">
-            {Object.values(errors).map(value => (
+            {Object.values(errors).map((value) => (
               <li key={value}>{value}</li>
             ))}
           </ul>

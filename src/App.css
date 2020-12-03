@@ -7,6 +7,15 @@
 
 .description {
   font-size: 1rem;
+  margin: 0px;
+  width: 80%;
+  margin-top: 0px;
+}
+
+.essayPageDescription {
+  font-size: 1rem;
+  margin: auto;
+  width: 50%;
 }
 
 .form-container {
@@ -37,10 +46,34 @@ input {
   vertical-align: middle;
 }
 
-.authorDescription {
-  font-size: 12px;
-}
-
 .MuiAutocomplete-listbox {
   height: 150px;
+}
+
+.author_image {
+  display: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.search {
+  display: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link {
+  text-decoration: underline;
+}
+
+.cardImage {
+  opacity: 0.7;
+  margin: 0;
+  height: 4em;
+  width: 4em;
+}
+
+.author_card_description {
+  width: 80%;
 }
