@@ -17,6 +17,9 @@ function LikeButton({ user, essay: { id, likeCount, likes } }) {
 
   const [likeEssay] = useMutation(LIKE_ESSAY_MUTATION, {
     variables: { essayId: id },
+    onError(err) {
+      console.log(err);
+    },
   });
 
   const likeButton = user ? (

@@ -7,7 +7,7 @@ import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
 import { useHistory } from "react-router-dom";
 
-function Login(props) {
+function Login() {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
@@ -19,7 +19,7 @@ function Login(props) {
   let history = useHistory();
 
   //Need proper solution to page crashing before user is able to login.
-  //This isn't perfect as it is also catching incorrect crednetials error
+  //This isn't perfect as it is also catching incorrect credentials error
   //and so preventing message from being displayed.
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
