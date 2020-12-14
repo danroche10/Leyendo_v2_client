@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
-
 import gql from "graphql-tag";
-import { Grid } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import AuthorCard from "../components/AuthorCard";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+//import Button from "@material-ui/core/Button";
 import { Controller, useForm } from "react-hook-form";
-//import { WriterContext } from "../context/WriterContext";
 
 function Author() {
-  //const [writer, setWriter] = useContext(WriterContext);
   const [search2, setSearch2] = useState("");
   const [topic, setTopic] = useState("");
-
   const { loading: loading2, data: data2 } = useQuery(FETCH_ESSAYS_QUERY);
-
   console.log(`Loading: ${loading2}`);
 
   let essays = "";
@@ -64,6 +59,7 @@ function Author() {
     filteredAuthors.sort((a, b) =>
       a.author.split(" ").reverse() > b.author.split(" ").reverse() ? 1 : -1
     );
+    console.log(filteredAuthors.length);
   }
 
   const [formState, setFormState] = useState("");
@@ -111,94 +107,114 @@ function Author() {
     localStorage.setItem("chosen-author", JSON.stringify(search2));
   });
 
+  console.log(formState);
+
   return (
-    <Grid columns={3}>
-      <Grid.Row className="page-title">
-        <h1>Authors</h1>
-        <div style={{ width: 300 }} className="search">
-          {!topic ? (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name="autocomplete"
-                control={control}
-                onChange={([e, data, reason]) => handleChange(e, data, reason)}
-                onInputChange={(e, data) => handleInputChange(e, data)}
-                //defaultValue=""
-                as={
-                  <Autocomplete
-                    id="free-solo-demo"
-                    freeSolo
-                    options={options2}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="e.g. Technology"
-                        helperText="Choose a Topic"
-                        margin="normal"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                }
-              />
-              <Button variant="contained" type="submit">
-                Submit
-              </Button>
-            </form>
+    <div>
+      <br></br>
+      <br></br>
+      <div className="hello">Leyendo</div>
+      <div className="hello2">
+        Read the best essays from across the internet
+      </div>
+      <Grid columns={3}>
+        <Grid.Row className="page-title">
+          <div style={{ width: 300 }} className="search">
+            {!topic || filteredAuthors2.length < 1 ? (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Controller
+                  name="autocomplete"
+                  control={control}
+                  onChange={([e, data, reason]) =>
+                    handleChange(e, data, reason)
+                  }
+                  onInputChange={(e, data) => handleInputChange(e, data)}
+                  //defaultValue=""
+                  as={
+                    <Autocomplete
+                      id="free-solo-demo"
+                      freeSolo
+                      options={options2}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="e.g. Technology"
+                          helperText="Choose a Topic"
+                          margin="normal"
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                  }
+                />
+                <Button color="blue" basicvariant="contained" type="submit">
+                  Submit
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit2)}>
+                <Controller
+                  name="autocomplete"
+                  control={control}
+                  onChange={([e, data, reason]) =>
+                    handleChange(e, data, reason)
+                  }
+                  onInputChange={(e, data) => handleInputChange(e, data)}
+                  //defaultValue=""
+                  as={
+                    <Autocomplete
+                      id="free-solo-demo"
+                      freeSolo
+                      options={options}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          //label="e.g. Paul Graham"
+
+                          helperText="Choose an Author"
+                          margin="normal"
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                  }
+                />
+                <Button color="blue" variant="contained" type="submit">
+                  Submit
+                </Button>
+              </form>
+            )}
+          </div>
+        </Grid.Row>
+
+        {topic || search2 ? (
+          <div className="clearFilter">
+            <Button
+              className="clearFilters"
+              labelPosition="left"
+              onClick={clearFilters}
+            >
+              <b>Clear Filters</b>
+            </Button>
+          </div>
+        ) : null}
+
+        <Grid.Row stretched>
+          {loading ? (
+            <h1>Loading authors..</h1>
+          ) : filtery.length < 1 || filteredAuthors.length < 1 ? (
+            <h3>Sorry, your search didnt' return anything :(</h3>
           ) : (
-            <form onSubmit={handleSubmit(onSubmit2)}>
-              <Controller
-                name="autocomplete"
-                control={control}
-                onChange={([e, data, reason]) => handleChange(e, data, reason)}
-                onInputChange={(e, data) => handleInputChange(e, data)}
-                //defaultValue=""
-                as={
-                  <Autocomplete
-                    id="free-solo-demo"
-                    freeSolo
-                    options={options}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        //label="e.g. Paul Graham"
-
-                        helperText="Choose an Author"
-                        margin="normal"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                }
-              />
-              <Button variant="contained" type="submit">
-                Submit
-              </Button>
-            </form>
+            authors.data &&
+            filteredAuthors.map((author) => (
+              <Grid.Column key={author.id} style={{ marginBottom: 20 }}>
+                <AuthorCard author={author} />
+              </Grid.Column>
+            ))
           )}
-        </div>
-        <br></br>
-        <br></br>
-      </Grid.Row>
-      {topic || search2 ? (
-        <Button labelPosition="left" onClick={clearFilters}>
-          Clear Filters
-        </Button>
-      ) : null}
-
-      <Grid.Row stretched>
-        {loading ? (
-          <h1>Loading authors..</h1>
-        ) : (
-          authors.data &&
-          filteredAuthors.map((author) => (
-            <Grid.Column key={author.id} style={{ marginBottom: 20 }}>
-              <AuthorCard author={author} />
-            </Grid.Column>
-          ))
-        )}
-      </Grid.Row>
-    </Grid>
+        </Grid.Row>
+      </Grid>
+    </div>
   );
 }
 

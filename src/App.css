@@ -77,3 +77,18 @@ input {
 .author_card_description {
   width: 80%;
 }
+
+.noResult {
+  display: center;
+}
+
+.hello {
+  text-align: center;
+  font: Georgia;
+  font-size: 7.5vmin;
+}
+
+.hello2 {
+  text-align: center;
+  margin-top: 3%;
+}

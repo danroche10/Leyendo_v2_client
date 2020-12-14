@@ -102,9 +102,12 @@ function SingleEssay(props) {
                     <br></br>
                     <br></br>
                   </ExternalLink>
-                  <Button labelPosition="left" as={Link} to={`/${author}`}>
-                    Back to {writer}'s Essays
-                  </Button>
+                  <Card.Description>
+                    <Link as={Link} to={`/${author}`}>
+                      Back
+                    </Link>{" "}
+                    to author's essays
+                  </Card.Description>
                 </Card.Description>
 
                 {!user && (

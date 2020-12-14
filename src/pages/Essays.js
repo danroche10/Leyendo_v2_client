@@ -117,6 +117,8 @@ function Essay(props) {
       <Grid.Row stretched>
         {loading ? (
           <h1>Loading essays..</h1>
+        ) : filteredEssays < 1 ? (
+          <h3>Sorry, your search didnt' return anything :(</h3>
         ) : (
           essays.data &&
           filteredEssays.map((essay) => (
