@@ -67,7 +67,7 @@ function Essay(props) {
   };
 
   return (
-    <Grid columns={3}>
+    <Grid className="ui stackable four column grid" columns={3}>
       <Grid.Row className="page-title">
         <h1>Essays from {writer}</h1>
         <Image className="author_image" size="small" src={image_link} />

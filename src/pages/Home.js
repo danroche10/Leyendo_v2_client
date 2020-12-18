@@ -117,7 +117,7 @@ function Author() {
       <div className="hello2">
         Read the best essays from across the internet
       </div>
-      <Grid columns={3}>
+      <Grid className="ui stackable four column grid" columns={3}>
         <Grid.Row className="page-title">
           <div style={{ width: 300 }} className="search">
             {!topic || filteredAuthors2.length < 1 ? (
