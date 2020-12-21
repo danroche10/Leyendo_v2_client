@@ -42,7 +42,6 @@ function App() {
             <AuthRoute exact path="/login" component={Login} />
             <AuthRoute exact path="/register" component={Register} />
             <Route exact path="/:writer/:essayId" component={SingleEssay} />
-            <Route render={() => <Redirect to={{ pathname: "/" }} />} />
           </Container>
         </Router>
       </WriterContext.Provider>
