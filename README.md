@@ -4,7 +4,7 @@ Production version: https://cocky-easley-edf596.netlify.app/
 
 This is the frontend of Leyendo v2, a improved version of v1. Leyendo aims to provide readers with access to the best writing across the internet. Authenticated users are able to like and comment on pieces that they enjoy.
 
-A few notes on the v2:
+**A few notes on the v2:**
 
 The frontend is built in React and uses functional components with hooks. Within React, I have also used react-router-dom and react-hook-form.
 
