@@ -12,7 +12,7 @@ The Apollo-client is used in order to manage data with GraphQL. (I have discusse
 
 I have primarily used Semantic for design.
 
-Plans for v3 frontend
+**Plans for v3 frontend:**
 
 V3 of Leyendo will provide a better user journey beginning from the home page.
 
